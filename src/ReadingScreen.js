@@ -1,47 +1,59 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const ReadingScreen = props => {
   let [addComment, setAddComment] = useState('');
   let [newComment, setNewComment] = useState([]);
 
+  let objComment = {
+    id: '',
+    content: addComment,
+    author: 'name',
+  };
+
   let arr_post = props.post_info.filter(x => {
     return x.id === props.clickpost + 1;
   });
 
+  const objPost = arr_post.reduce((prev, curr) => {
+    prev = curr;
+    return prev;
+  }, {});
+
+  let addition = () => {
+    if (newComment.length === 0) {
+      setNewComment([...objPost.comments, objComment]);
+    } else {
+      setNewComment([...newComment, objComment]);
+      objPost.comments = newComment;
+    }
+    setAddComment('');
+  };
+
   return (
     <div>
-      {arr_post.map(post => {
-        return (
+      <div>
+        <NavLink to="/">Back</NavLink>
+        <div style={{ backgroundImage: 'url(' + objPost.image + ')' }}>
+          {objPost.title}
+        </div>
+        <div>{objPost.description}</div>
+        <div>
+          <h3>Comments</h3>
           <div>
-            <div style={{ backgroundImage: 'url(' + post.image + ')' }}>
-              {post.title}
-            </div>
-            <div>{post.description}</div>
-            <div>
-              <h3>Comments</h3>
-              <div>
-                {post.comments.map((comment, key) => {
-                  return <div>{comment.content}</div>;
-                })}
-              </div>
-              <div>
-                {newComment}
-                <br />
-              </div>
-            </div>
+            {objPost.comments.map((comment, key) => {
+              return <div>{comment.content}</div>;
+            })}
           </div>
-        );
-      })}
+        </div>
+      </div>
       <input
         type="text"
         value={addComment}
         onChange={e => setAddComment(e.target.value)}
       />
       <br />
-      <input
-        type="submit"
-        onClick={() => setNewComment([...newComment, addComment])}
-      />
+      <input type="submit" onClick={() => addition(addComment)} />
     </div>
   );
 };

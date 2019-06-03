@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
 const ModalButton = () => {
+  //const [formInfo, setFormInfo] = useState({});
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -26,6 +27,7 @@ const ModalButton = () => {
     },
   }));
   const classes = useStyles();
+  //console.log(formInfo);
 
   return (
     <div>
@@ -38,7 +40,13 @@ const ModalButton = () => {
       >
         <div className={classes.paper}>
           <h2>Create Post</h2>
-          <TextField defaultValue="Title">title</TextField>
+          <TextField
+            defaultValue="Title"
+            //value={formInfo}
+            //onChange={e => setFormInfo(e.target.value)}
+          >
+            title
+          </TextField>
           <br />
           <TextField defaultValue="Short Description">
             short description
