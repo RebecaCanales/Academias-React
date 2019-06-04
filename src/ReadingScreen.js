@@ -20,15 +20,13 @@ const ReadingScreen = props => {
     return prev;
   }, {});
 
-  let addition = () => {
-    if (newComment.length === 0) {
-      setNewComment([...objPost.comments, objComment]);
-    } else {
-      setNewComment([...newComment, objComment]);
-      objPost.comments = newComment;
-    }
-    setAddComment('');
-  };
+  if (newComment.length === 0 && objPost.comments.length === 0) {
+    setNewComment([objPost.comments]);
+  } else if (newComment.length === 0 && objPost.comments.length !== 0) {
+    setNewComment([...objPost.comments]);
+  } else {
+    objPost.comments = newComment;
+  }
 
   return (
     <div>
@@ -53,7 +51,10 @@ const ReadingScreen = props => {
         onChange={e => setAddComment(e.target.value)}
       />
       <br />
-      <input type="submit" onClick={() => addition(addComment)} />
+      <input
+        type="submit"
+        onClick={() => setNewComment([...newComment, objComment])}
+      />
     </div>
   );
 };
