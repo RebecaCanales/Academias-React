@@ -4,12 +4,12 @@ import { Switch } from 'react-router';
 import ReadingScreen from './ReadingScreen';
 import Home from './Home';
 import axios from 'axios';
-import NewPost from './NewPost';
 
 const App = () => {
   let [post_info, setPost_info] = useState([]);
   let [categories, setCategories] = useState('');
   let [count, setCount] = useState('');
+  let [saveForm, setSaveForm] = useState('');
 
   useEffect(() => {
     axios
@@ -27,6 +27,10 @@ const App = () => {
     setCount(count);
   };
 
+  let funcSubmit = saved => {
+    setSaveForm(saved);
+  };
+
   return (
     <div>
       <header>
@@ -41,7 +45,9 @@ const App = () => {
             render={props => (
               <Home
                 Post={Post}
+                funcSubmit={funcSubmit}
                 handleCategory={handleCategory}
+                saveForm={saveForm}
                 post_info={post_info}
                 categories={categories}
               />
@@ -53,7 +59,6 @@ const App = () => {
               <ReadingScreen clickpost={count} post_info={post_info} />
             )}
           />
-          <Route path="/NewPost" component={NewPost} />
         </Switch>
       </Router>
     </div>
