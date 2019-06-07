@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import Buttons from './Buttons';
 import ModalButton from './ModalButton';
 import { NavLink } from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
 
 const Home = props => {
+  console.log(props.post_info);
   const { handleCategory } = props;
-  let arr_post = '';
+  let arr_post = [];
   console.log(props.saveForm);
 
   if (props.categories === 'all') {
@@ -30,43 +34,62 @@ const Home = props => {
 
   const handleDelete = key => {
     arr_post = props.post_info.filter(x => {
-      return x.id - 1 != key;
+      return x.id != key;
     });
-    //console.log(arr_post);
+    props.funcDelete(arr_post);
   };
 
   return (
     <div className="App">
-      <ModalButton funcSubmit={props.funcSubmit} />
+      <ModalButton funcSubmit={props.funcSubmit} arr_post={arr_post} />
       <Buttons handleCategory={handleCategory} />
-      <div>
+      <br />
+      <Grid container>
         {arr_post.map((post, index) => {
           return (
-            <div key={`${post}${index}`}>
-              <NavLink
-                to="/ReadingScreen"
-                onClick={() => {
-                  handlePost(index);
-                }}
-              >
-                <div style={{ backgroundImage: 'url(' + post.image + ')' }}>
-                  <h3>{post.title}</h3>
-                  <span>
-                    <i>{post.comments.length} Comments</i>
-                  </span>
-                  <p>{post.shortDescription}</p>
-                  <label>{post.category}</label>
-                  <br />
+            <Grid item xs={12} sm={6} key={`${post}${index}`}>
+              <Card>
+                <div
+                  style={{
+                    backgroundImage: 'url(' + post.image + ')',
+                    height: '250px',
+                  }}
+                >
+                  <NavLink
+                    to="/ReadingScreen"
+                    style={{ textDecoration: 'none' }}
+                    onClick={() => {
+                      handlePost(index);
+                    }}
+                  >
+                    <div>
+                      <Typography variant="h5" style={{ fontWeight: 'bold' }}>
+                        {post.title}
+                      </Typography>
+                      <span>
+                        <Typography>
+                          <i>{post.comments.length} Comments</i>
+                        </Typography>
+                      </span>
+                      <Typography paragraph>{post.shortDescription}</Typography>
+                      <Typography
+                        style={{
+                          textTransform: 'uppercase',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {post.category}
+                      </Typography>
+                      <br />
+                    </div>
+                  </NavLink>
+                  <button onClick={() => handleDelete(post.id)}>Delete</button>
                 </div>
-              </NavLink>
-              <button>Edit</button>
-              <button value={index} onClick={e => handleDelete(e.target.value)}>
-                Delete
-              </button>
-            </div>
+              </Card>
+            </Grid>
           );
         })}
-      </div>
+      </Grid>
     </div>
   );
 };

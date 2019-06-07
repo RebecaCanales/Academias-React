@@ -4,6 +4,8 @@ import { Switch } from 'react-router';
 import ReadingScreen from './ReadingScreen';
 import Home from './Home';
 import axios from 'axios';
+import Typography from '@material-ui/core/Typography';
+import { RSA_NO_PADDING } from 'constants';
 
 const App = () => {
   let [post_info, setPost_info] = useState([]);
@@ -26,40 +28,52 @@ const App = () => {
   let Post = count => {
     setCount(count);
   };
+  let funcDelete = buttonDelete => {
+    setPost_info(buttonDelete);
+  };
 
   let funcSubmit = saved => {
+    console.log(saved);
     setSaveForm(saved);
+    setPost_info([...post_info, saved]);
   };
 
   return (
-    <div>
+    <div align="center">
       <header>
-        <span>[ Making your Life Easier ]</span>
-        <h2>Discovering the World</h2>
+        <Typography style={{ color: 'coral', padding: '35px 0 15px 0' }}>
+          <span style={{ fontSize: '35px' }}>[</span> Making your Life Easier{' '}
+          <span style={{ fontSize: '35px' }}>]</span>
+        </Typography>
+        <Typography
+          variant="h3"
+          style={{ fontWeight: 'bold', padding: '0 0 30px 0' }}
+        >
+          Discovering the World
+        </Typography>
       </header>
       <Router>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={props => (
-              <Home
-                Post={Post}
-                funcSubmit={funcSubmit}
-                handleCategory={handleCategory}
-                saveForm={saveForm}
-                post_info={post_info}
-                categories={categories}
-              />
-            )}
-          />
-          <Route
-            path="/ReadingScreen"
-            render={props => (
-              <ReadingScreen clickpost={count} post_info={post_info} />
-            )}
-          />
-        </Switch>
+        <Route
+          exact
+          path="/"
+          render={props => (
+            <Home
+              Post={Post}
+              funcSubmit={funcSubmit}
+              handleCategory={handleCategory}
+              saveForm={saveForm}
+              post_info={post_info}
+              categories={categories}
+              funcDelete={funcDelete}
+            />
+          )}
+        />
+        <Route
+          path="/ReadingScreen"
+          render={props => (
+            <ReadingScreen clickpost={count} post_info={post_info} />
+          )}
+        />
       </Router>
     </div>
   );

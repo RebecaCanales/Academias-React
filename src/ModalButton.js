@@ -3,15 +3,21 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const ModalButton = props => {
+  let idNum = props.arr_post.length + 1;
   const [formInfo, setFormInfo] = useState({
-    title: 'Title',
-    shortDescription: 'Short Description',
-    description: 'Description',
-    category: 'Category',
-    image: 'Image',
+    title: '',
+    shortDescription: '',
+    description: '',
+    category: '',
+    image: '',
+    comments: [],
+    id: 0,
   });
+
   const [open, setOpen] = React.useState(false);
 
   const handleSubmit = () => {
@@ -19,8 +25,7 @@ const ModalButton = props => {
   };
 
   const handleForm = name => e => {
-    setFormInfo({ ...formInfo, [name]: e.target.value });
-    console.log(formInfo);
+    setFormInfo({ ...formInfo, [name]: e.target.value, id: idNum });
   };
 
   const handleOpen = () => {
@@ -42,7 +47,6 @@ const ModalButton = props => {
     },
   }));
   const classes = useStyles();
-  //console.log(formInfo);
 
   return (
     <div>
@@ -52,55 +56,56 @@ const ModalButton = props => {
         aria-describedby="simple-modal-description"
         open={open}
         onClose={handleClose}
+        align="center"
       >
         <div className={classes.paper}>
           <h2>Create Post</h2>
           <TextField
-            //defaultValue="Title"
             value={formInfo.title}
             lable="title"
-            onChange={e => handleForm('title')}
+            onChange={handleForm('title')}
           >
             title
           </TextField>
           <br />
           <TextField
-            //defaultValue="Short Description"
             value={formInfo.shortDescription}
             name="shortDescription"
-            onChange={e => handleForm('shortDescription')}
+            onChange={handleForm('shortDescription')}
           >
             short description
           </TextField>
           <br />
           <TextField
-            //defaultValue="Description"
             value={formInfo.description}
             name="description"
-            onChange={e => handleForm('description')}
+            onChange={handleForm('description')}
           >
             description
           </TextField>
           <br />
-          <TextField
-            //defaultValue="Category"
+          <Select
             value={formInfo.category}
             name="category"
-            onChange={e => handleForm('category')}
+            onChange={handleForm('category')}
           >
+            <MenuItem value={'travel'}>travel</MenuItem>
+            <MenuItem value={'lifestyle'}>lifestyle</MenuItem>
+            <MenuItem value={'business'}>business</MenuItem>
+            <MenuItem value={'food'}>food</MenuItem>
+            <MenuItem value={'work'}>work</MenuItem>
             category
-          </TextField>
+          </Select>
           <br />
           <TextField
-            //defaultValue="Image URL"
+            defaultValue="Image URL"
             value={formInfo.image}
             name="image"
-            onChange={e => handleForm('image')}
+            onChange={handleForm('image')}
           >
             image URL
           </TextField>
           <br />
-          <Button>cancel</Button>
           <Button
             onClick={() => {
               handleSubmit();
